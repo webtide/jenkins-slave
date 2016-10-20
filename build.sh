@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker build --tag=docker-jenkins-slave:latest docker/
+docker build --tag=jenkins-slave:latest docker/
 
