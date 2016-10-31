@@ -41,6 +41,7 @@ ENV LC_ALL en_US.UTF-8
 
 RUN useradd --create-home \
             --home-dir /opt/jenkins \
+            --groups users \
             --shell /bin/bash \
             jetty
 RUN echo 'jetty:jetty' | chpasswd
