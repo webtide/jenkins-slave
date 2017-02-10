@@ -29,7 +29,7 @@ RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pa
 EXPOSE 22
 
 # Setup DNS for internal network
-RUN echo "192.168.1.100 jenkins.webtide.net" >> /etc/hosts
+RUN echo "192.168.3.149 jenkins.webtide.net" >> /etc/hosts
 
 # Basic Locale Stuff
 
