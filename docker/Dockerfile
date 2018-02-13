@@ -23,13 +23,13 @@ RUN locale-gen en_US.UTF-8 && \
 
 # SSHD Configuration
 
-RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd && \
-    mkdir -p /var/run/sshd && \
-    systemctl enable ssh
-EXPOSE 22
+# RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd && \
+#    mkdir -p /var/run/sshd && \
+#    systemctl enable ssh
+# EXPOSE 22
 
 # Setup DNS for internal network
-RUN echo "192.168.3.149 jenkins.webtide.net" >> /etc/hosts
+RUN echo "10.0.0.11 jenkins.webtide.net" >> /etc/hosts
 
 # Basic Locale Stuff
 
@@ -61,4 +61,3 @@ USER jetty
 WORKDIR /opt/jenkins
 
 CMD [/bin/bash]
-
