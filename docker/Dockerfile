@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM ubuntu:artful
 MAINTAINER Joakim Erdfelt <joakim@webtide.com>
 
 # Packages Update / Install
