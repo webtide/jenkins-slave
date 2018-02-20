@@ -1,14 +1,18 @@
 FROM ubuntu:artful
 MAINTAINER Joakim Erdfelt <joakim@webtide.com>
 
+# Default to UTF-8 file.encoding
+ENV LANG C.UTF-8
+
 # Packages Update / Install
 
-RUN locale-gen en_US.UTF-8 && \
-    apt-get -q update && \
+RUN apt-get -q update && \
     apt-get -q upgrade -y && \
     apt-get -q install -y \
-               ca-certificates \
-               openssh-server \
+               bzip2 \
+               unzip \
+               xz-utils \
+               ca-certificates-java \
                openjdk-8-jdk-headless \
                curl \
                docker \
@@ -18,46 +22,37 @@ RUN locale-gen en_US.UTF-8 && \
     apt-get -q autoremove && \
     apt-get -q clean -y && \
     rm -rf /var/lib/apt/lists/* && \
-    rm -f /var/cache/apt/*.bin && \
-    /var/lib/dpkg/info/ca-certificates-java.postinst configure
+    rm -f /var/cache/apt/*.bin
 
-# SSHD Configuration
+# see CA_CERTIFICATES_JAVA_VERSION notes above
+RUN /var/lib/dpkg/info/ca-certificates-java.postinst configure
 
-# RUN sed -i 's|session    required     pam_loginuid.so|session    optional     pam_loginuid.so|g' /etc/pam.d/sshd && \
-#    mkdir -p /var/run/sshd && \
-#    systemctl enable ssh
-# EXPOSE 22
+# Run as Jenkins User
 
-# Setup DNS for internal network
-RUN echo "10.0.0.11 jenkins.webtide.net" >> /etc/hosts
+ENV HOME /home/jenkins
+RUN groupadd -g 10000 jenkins
+RUN useradd -c "Jenkins user" -d $HOME -u 10000 -g 10000 -m jenkins
 
-# Basic Locale Stuff
+# Agent Install
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ARG VERSION=3.16
+ARG AGENT_WORKDIR=/home/jenkins/agent
 
-# Setup Jetty User
+RUN curl --create-dirs -sSLo /usr/share/jenkins/slave.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar \
+  && chmod 755 /usr/share/jenkins \
+  && chmod 644 /usr/share/jenkins/slave.jar
 
-RUN useradd --create-home \
-            --home-dir /opt/jenkins \
-            --groups users \
-            --shell /bin/bash \
-            jetty
-RUN echo 'jetty:jetty' | chpasswd
+# Environment Setup
 
-# Jenkins Configuration
+USER jenkins
+ENV AGENT_WORKDIR=${AGENT_WORKDIR}
+RUN mkdir /home/jenkins/.jenkins && mkdir -p ${AGENT_WORKDIR}
 
-RUN curl --insecure --output /opt/jenkins/slave.jar https://jenkins.webtide.net/jnlpJars/slave.jar
-ADD slave.sh /opt/jenkins/
+VOLUME /home/jenkins/.jenkins
+VOLUME ${AGENT_WORKDIR}
+WORKDIR /home/jenkins
 
-# Fix Permissions
+# JNLP Setup
 
-RUN chown jetty:jetty /opt/jenkins/*
-
-# Run as Jetty User
-
-USER jetty
-WORKDIR /opt/jenkins
-
-CMD [/bin/bash]
+COPY jenkins-slave /usr/local/bin/jenkins-slave
+ENTRYPOINT ["jenkins-slave"]
