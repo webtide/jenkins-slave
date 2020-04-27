@@ -5,3 +5,7 @@
 
 docker build --no-cache --tag=jetty-build:latest build-image/
 
+#to deploy
+# docker tag jetty-build:latest jettyproject/jetty-build:latest
+# docker push jettyproject/jetty-build:latest
+
