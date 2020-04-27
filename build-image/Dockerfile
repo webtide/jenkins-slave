@@ -11,6 +11,7 @@ ENV LANG C.UTF-8
 RUN apt -q update &&     \
     apt -q upgrade -y && \
     apt -q install -y    \
+                gcc      \
                 zip      \
                 unzip    \
                 curl     \
@@ -71,7 +72,9 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
   && tar -xzf /tmp/apache-maven.tar.gz -C /usr/share/maven --strip-components=1 \
   && rm -f /tmp/apache-maven.tar.gz \
-  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn \
+  && mkdir /home/jenkins \
+  && mkdir /home/jenkins/agent
 
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
