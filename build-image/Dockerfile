@@ -17,6 +17,11 @@ RUN apt -q update &&     \
                 curl     \
                 python   \
                 graphviz \
+                make     \
+                apt-transport-https \
+                ca-certificates \
+                gnupg-agent \
+                software-properties-common \
                 git &&   \
     apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
@@ -25,6 +30,19 @@ RUN apt -q update &&     \
     apt -q clean -y &&   \
     rm -rf /var/lib/apt/lists/* && \
     rm -f /var/cache/apt/*.bin
+
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+RUN add-apt-repository \
+       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+       $(lsb_release -cs) \
+       stable"
+
+RUN apt -q update &&            \
+    apt -q install -y           \
+                docker-ce       \
+                docker-ce-cli   \
+                containerd.io
 
 ENV JAVA_VERSION jdk-11.0.7+10
 
