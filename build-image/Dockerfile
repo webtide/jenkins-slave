@@ -97,3 +97,19 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
+ARG user=jenkins
+ARG group=jenkins
+ARG uid=1000
+ARG gid=1000
+RUN addgroup -gid ${gid} ${group}
+RUN adduser --home /home/${user} --uid ${uid} --gid ${gid} ${user}
+ARG AGENT_WORKDIR=/home/${user}/agent
+RUN chown -R jenkins:jenkins /home/jenkins
+USER ${user}
+ENV AGENT_WORKDIR=${AGENT_WORKDIR}
+RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
+
+VOLUME /home/${user}/.jenkins
+VOLUME ${AGENT_WORKDIR}
+WORKDIR /home/${user}
+
