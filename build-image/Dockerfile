@@ -1,10 +1,13 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 MAINTAINER Olivier Lamy <olamy@apache.org>
 ARG MAVEN_VERSION=3.6.3
 ARG USER_HOME_DIR="/root"
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
+
+#non interactive
+ENV DEBIAN_FRONTEND=noninteractive 
 
 # Packages Update / Install
 
