@@ -105,6 +105,7 @@ RUN addgroup -gid ${gid} ${group}
 RUN adduser --home /home/${user} --uid ${uid} --gid ${gid} ${user}
 ARG AGENT_WORKDIR=/home/${user}/agent
 RUN chown -R jenkins:jenkins /home/jenkins
+RUN chown -R jenkins:jenkins /home/jenkins/agent
 USER ${user}
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
