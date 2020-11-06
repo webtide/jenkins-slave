@@ -72,6 +72,9 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH $PATH:/root/google-cloud-sdk/bin
+
 ARG user=jenkins
 ARG group=jenkins
 ARG uid=1000
@@ -81,10 +84,12 @@ RUN adduser --home /home/${user} --uid ${uid} --gid ${gid} ${user}
 ARG AGENT_WORKDIR=/home/${user}/agent
 RUN chown -R jenkins:jenkins /home/jenkins
 RUN chown -R jenkins:jenkins /home/jenkins/agent
+RUN chmod -R jenkins:jenkins /root/google-cloud-sdk/
 USER ${user}
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 #RUN echo "transport.type=httpclient5" > /home/${user}/.testcontainers.properties
+ENV PATH $PATH:/root/google-cloud-sdk/bin
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
