@@ -25,6 +25,7 @@ RUN apt -q update &&     \
                 ca-certificates \
                 gnupg-agent \
                 software-properties-common \
+                iproute2 \
                 git &&   \
     apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
