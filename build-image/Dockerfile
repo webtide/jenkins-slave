@@ -92,8 +92,7 @@ RUN chmod 777 /home/jenkins/google-cloud-sdk/bin/*
 USER ${user}
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
-#RUN echo "transport.type=httpclient5" > /home/${user}/.testcontainers.properties
-ENV PATH $PATH:/root/google-cloud-sdk/bin
+ENV PATH=/home/jenkins/google-cloud-sdk/bin:$PATH
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
