@@ -16,6 +16,7 @@ RUN apt -q update &&     \
     apt -q install -y    \
                 gcc      \
                 zip      \
+                wget     \
                 unzip    \
                 curl     \
                 python   \
