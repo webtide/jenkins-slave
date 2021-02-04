@@ -27,8 +27,7 @@ RUN apt -q update &&     \
                 gnupg-agent \
                 software-properties-common \
                 iproute2 \
-                leiningen \
-                jq \
+                netcat \
                 git &&   \
     apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
