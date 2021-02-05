@@ -27,6 +27,7 @@ RUN apt -q update &&     \
                 gnupg-agent \
                 software-properties-common \
                 iproute2 \
+                jq \
                 netcat \
                 git &&   \
     apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales && \
