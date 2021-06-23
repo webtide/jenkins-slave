@@ -27,6 +27,8 @@ RUN apt -q update &&     \
                 gnupg-agent \
                 software-properties-common \
                 iproute2 \
+                leiningen \
+                netcat \
                 jq \
                 netcat \
                 git &&   \
@@ -60,8 +62,8 @@ RUN set -eux; \
     tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
     rm -rf /tmp/openjdk.tar.gz;
 
-ENV JAVA_HOME=/opt/java/openjdk \
-    PATH="/opt/java/openjdk/bin:$PATH"
+ENV JAVA_HOME /opt/java/openjdk 
+ENV PATH="/opt/java/openjdk/bin:$PATH"
 
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
