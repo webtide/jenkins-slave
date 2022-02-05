@@ -53,17 +53,9 @@ RUN apt -q update &&            \
                 docker-ce-cli   \
                 containerd.io
 
-ENV JAVA_VERSION jdk-11.0.7+10
-
-RUN set -eux; \
-    curl -LfsSo /tmp/openjdk.tar.gz https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.9%2B11.1/OpenJDK11U-jre_x64_linux_hotspot_11.0.9_11.tar.gz; \
-    mkdir -p /opt/java/openjdk; \
-    cd /opt/java/openjdk; \
-    tar -xf /tmp/openjdk.tar.gz --strip-components=1; \
-    rm -rf /tmp/openjdk.tar.gz;
-
-ENV JAVA_HOME /usr
-ENV PATH="/opt/java/openjdk/bin:$PATH"
+ENV JAVA_HOME=/opt/java/openjdk
+COPY --from=eclipse-temurin:11-jdk $JAVA_HOME $JAVA_HOME
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
 
