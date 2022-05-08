@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 MAINTAINER Olivier Lamy <olamy@apache.org>
-ARG MAVEN_VERSION=3.8.4
+ARG MAVEN_VERSION=3.8.5
 ARG USER_HOME_DIR="/root"
 
 # Default to UTF-8 file.encoding
@@ -31,6 +31,7 @@ RUN apt -q update &&     \
                 netcat \
                 jq \
                 netcat \
+                nodejs \
                 git &&   \
     apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
