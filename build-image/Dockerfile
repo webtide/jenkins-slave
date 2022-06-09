@@ -20,6 +20,7 @@ RUN apt -q update &&     \
                 unzip    \
                 curl     \
                 python   \
+                python3-pip \
                 graphviz \
                 make     \
                 apt-transport-https \
@@ -54,6 +55,7 @@ RUN apt -q update &&            \
                 docker-ce-cli   \
                 containerd.io
 
+
 ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:11-jdk $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
@@ -81,6 +83,7 @@ ARG AGENT_WORKDIR=/home/${user}/agent
 RUN chown -R jenkins:jenkins /home/jenkins
 RUN chown -R jenkins:jenkins /home/jenkins/agent
 USER ${user}
+RUN pip3 install --user --upgrade launchable~=1.0
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 #ENV PATH=/home/jenkins/google-cloud-sdk/bin:$PATH
