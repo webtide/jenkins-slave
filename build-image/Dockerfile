@@ -70,6 +70,7 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && mkdir /home/jenkins \
   && mkdir /home/jenkins/agent
 
+RUN pip3 install --user --upgrade launchable~=1.0
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
