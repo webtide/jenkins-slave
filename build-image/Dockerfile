@@ -1,6 +1,6 @@
 FROM ubuntu:20.04
 MAINTAINER Olivier Lamy <olamy@apache.org>
-ARG MAVEN_VERSION=3.8.5
+ARG MAVEN_VERSION=3.8.6
 ARG USER_HOME_DIR="/root"
 
 # Default to UTF-8 file.encoding
@@ -60,7 +60,7 @@ ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:11-jdk $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-ARG BASE_URL=https://apache.osuosl.org/maven/maven-3/${MAVEN_VERSION}/binaries
+ARG BASE_URL=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}
 
 RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && curl -fsSL -o /tmp/apache-maven.tar.gz ${BASE_URL}/apache-maven-${MAVEN_VERSION}-bin.tar.gz \
@@ -87,6 +87,7 @@ USER ${user}
 RUN pip3 install --user --upgrade launchable~=1.0
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
+RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
 #ENV PATH=/home/jenkins/google-cloud-sdk/bin:$PATH
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
