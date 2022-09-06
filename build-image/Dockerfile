@@ -87,7 +87,6 @@ USER ${user}
 RUN pip3 install --user --upgrade launchable~=1.0
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
-RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
 #ENV PATH=/home/jenkins/google-cloud-sdk/bin:$PATH
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
