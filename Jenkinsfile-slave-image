@@ -1,0 +1,15 @@
+#!groovy
+
+pipeline{
+  agent any
+  stages{
+    stage("Docker login"){
+      steps{
+        withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          sh "docker login -u $USERNAME -p $PASSWORD"
+        }
+      }
+    }
+  }
+
+// vim: et:ts=2:sw=2:ft=groovy
