@@ -6,7 +6,7 @@ pipeline {
     stage("Docker build and push") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-          sh "docker login -u $USERNAME --p $PASSWORD"
+          sh "docker login -u $USERNAME -p $PASSWORD"
           sh "docker build --no-cache --tag=jetty-build-agent:latest slave-image/"
           sh "docker tag jetty-build-agent:latest jettyproject/jetty-build-agent:latest"
           sh "docker push jettyproject/jetty-build-agent:latest"
