@@ -2,6 +2,9 @@
 
 pipeline {
   agent any
+  triggers {
+    cron '@weekly'
+  }
   stages {
     stage("Docker build and push") {
       steps {
