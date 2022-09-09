@@ -18,7 +18,10 @@ pipeline {
           sh "docker logout"
           script {
             def imageName = Jenkins.instance.clouds.getByName("kubernetes").templates.find {it.name.equals("jenkins-slave")}.containers.find{it.name.equals("jnlp")}.image;
-            echo "imageName: $imageName"
+            echo "imageName before: $imageName"
+            Jenkins.instance.clouds.getByName("kubernetes").templates.find {it.name.equals("jenkins-slave")}.containers.find{it.name.equals("jnlp")}.image = "jettyproject/jetty-build-agent:" + timestamp
+            echo "imageName after: $imageName"
+            Jenkins.instance.save()
           }
         }
       }
