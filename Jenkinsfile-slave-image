@@ -1,4 +1,5 @@
 #!groovy
+import java.time.Instant
 
 pipeline {
   agent any
@@ -9,11 +10,14 @@ pipeline {
     stage("Docker build and push") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          timestamp = Instant.now().toEpochMilli();
           sh "docker login -u $USERNAME -p $PASSWORD"
           sh "docker build --no-cache --tag=jetty-build-agent:latest slave-image/"
-          sh "docker tag jetty-build-agent:latest jettyproject/jetty-build-agent:latest"
-          sh "docker push jettyproject/jetty-build-agent:latest"
+          sh "docker tag jetty-build-agent:latest jettyproject/jetty-build-agent:$timestamp"
+          sh "docker push jettyproject/jetty-build-agent:$timestamp"
           sh "docker logout"
+          imageName = Jenkins.instance.clouds.getByName("kubernetes").templates.find {it.name.equals("jenkins-slave")}.containers.find{it.name.equals("jnlp")}.image;
+          echo "imageName: $imageName"
         }
       }
     }
