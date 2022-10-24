@@ -20,7 +20,7 @@ RUN apt -q update &&     \
                 wget     \
                 unzip    \
                 curl     \
-                python   \
+                python3   \
                 python3-pip \
                 graphviz \
                 make     \
