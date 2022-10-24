@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 MAINTAINER Olivier Lamy <olamy@apache.org>
 ARG MAVEN_VERSION=3.8.6
 ARG USER_HOME_DIR="/root"
@@ -13,6 +13,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt -q update &&     \
     apt -q upgrade -y && \
+    apt -q install -y apt-utils && \
     apt -q install -y    \
                 gcc      \
                 zip      \
@@ -34,14 +35,14 @@ RUN apt -q update &&     \
                 netcat \
                 nodejs \
                 dnsutils \
-                git &&   \
-    apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales && \
-    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen en_US.UTF-8 && \
-    apt -q autoremove && \
-    apt -q clean -y &&   \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -f /var/cache/apt/*.bin
+                git 
+RUN    apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales
+RUN    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+RUN    locale-gen en_US.UTF-8
+RUN    apt -q autoremove 
+RUN    apt -q clean -y
+RUN    rm -rf /var/lib/apt/lists/*
+RUN    rm -f /var/cache/apt/*.bin
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
