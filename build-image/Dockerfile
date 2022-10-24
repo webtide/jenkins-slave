@@ -33,6 +33,7 @@ RUN apt -q update &&     \
                 jq \
                 netcat \
                 nodejs \
+                dnsutils \
                 git &&   \
     apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
