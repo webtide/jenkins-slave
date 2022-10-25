@@ -61,6 +61,10 @@ ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=eclipse-temurin:11-jdk $JAVA_HOME $JAVA_HOME
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
+COPY --from=eclipse-temurin:8-jdk /opt/java/openjdk /opt/java/jdk8
+COPY --from=eclipse-temurin:17-jdk /opt/java/openjdk /opt/java/jdk17
+COPY --from=eclipse-temurin:19-jdk /opt/java/openjdk /opt/java/jdk19
+
 ARG BASE_URL=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}
 
 RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
@@ -85,7 +89,6 @@ ARG AGENT_WORKDIR=/home/${user}/agent
 RUN chown -R jenkins:jenkins /home/jenkins
 RUN chown -R jenkins:jenkins /home/jenkins/agent
 USER ${user}
-RUN pip3 install --user --upgrade launchable~=1.0
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 #ENV PATH=/home/jenkins/google-cloud-sdk/bin:$PATH
