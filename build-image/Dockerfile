@@ -58,13 +58,14 @@ RUN apt -q update &&            \
                 containerd.io
 
 
-ENV JAVA_HOME=/opt/java/openjdk
-COPY --from=eclipse-temurin:11-jdk $JAVA_HOME $JAVA_HOME
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
-COPY --from=eclipse-temurin:8-jdk /opt/java/openjdk /opt/java/jdk8
-COPY --from=eclipse-temurin:17-jdk /opt/java/openjdk /opt/java/jdk17
-COPY --from=eclipse-temurin:19-jdk /opt/java/openjdk /opt/java/jdk19
+COPY --from=eclipse-temurin:8u345-b01-jdk /opt/java/openjdk /opt/java/jdk8
+COPY --from=eclipse-temurin:11.0.16.1_1-jdk /opt/java/openjdk /opt/java/jdk11
+COPY --from=eclipse-temurin:17.0.4.1_1-jdk /opt/java/openjdk /opt/java/jdk17
+COPY --from=eclipse-temurin:19_36-jdk /opt/java/openjdk /opt/java/jdk19
+
+ENV JAVA_HOME=/opt/java/jdk11
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 ARG BASE_URL=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}
 
@@ -76,7 +77,6 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && mkdir /home/jenkins \
   && mkdir /home/jenkins/agent
 
-RUN pip3 install --user --upgrade launchable~=1.0
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
