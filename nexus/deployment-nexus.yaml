@@ -4,10 +4,6 @@ metadata:
   name: nexus
   namespace: nexus
 spec:
-  volumes:
-    - name: pv-nexus-storage
-      persistentVolumeClaim:
-        claimName: task-pv-claim-nexus
   replicas: 1
   selector:
     matchLabels:
@@ -22,7 +18,7 @@ spec:
           image: sonatype/nexus3:3.42.0
           resources:
             limits:
-              memory: "xi64Gi"
+              memory: "6Gi"
               cpu: "1500m"
             requests:
               memory: "4Gi"
@@ -34,3 +30,7 @@ spec:
               name: pv-nexus-storage
           nodeSelector:
             nexus: true
+      volumes:
+      - name: pv-nexus-storage
+        persistentVolumeClaim:
+          claimName: task-pv-claim-nexus
