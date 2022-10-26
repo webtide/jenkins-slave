@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+  namespace: nexus
+spec:
+  volumes:
+    - name: pv-nexus-storage
+      persistentVolumeClaim:
+        claimName: task-pv-claim-nexus
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus-server
+  template:
+    metadata:
+      labels:
+        app: nexus-server
+    spec:
+      containers:
+        - name: nexus
+          image: sonatype/nexus3:3.42.0
+          resources:
+            limits:
+              memory: "xi64Gi"
+              cpu: "1500m"
+            requests:
+              memory: "4Gi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - mountPath: "/nexus-data"
+              name: pv-nexus-storage
+        nodeSelector:
+          nexus: true

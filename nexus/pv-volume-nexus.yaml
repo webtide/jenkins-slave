@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-nexus
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 140Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/app/nexus-storage/"
