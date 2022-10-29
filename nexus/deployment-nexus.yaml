@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nexus
+  name: nexus-server
   namespace: nexus
 spec:
   replicas: 1
@@ -13,6 +13,8 @@ spec:
       labels:
         app: nexus-server
     spec:
+      nodeSelector:
+        nexus: "true"
       containers:
         - name: nexus
           image: sonatype/nexus3:3.42.0
@@ -26,10 +28,10 @@ spec:
           ports:
             - containerPort: 8081
           volumeMounts:
-            - mountPath: "/nexus-data"
+            - mountPath: /nexus-data
               name: pv-nexus-storage
-          nodeSelector:
-            nexus: true
+            - mountPath: /opt/sonatype/sonatype-work
+              name: pv-nexus-storage
       volumes:
       - name: pv-nexus-storage
         persistentVolumeClaim:
