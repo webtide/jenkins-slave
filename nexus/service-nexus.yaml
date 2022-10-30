@@ -6,8 +6,13 @@ metadata:
 spec:
   selector: 
     app: nexus-server
-  type: NodePort  
+  type: LoadBalancer  
   ports:
-    - port: 3000
+    - name: maven-port
+      port: 3001
       targetPort: 8081
-      nodePort: 31000
+      nodePort: 31001
+    - name: docker-port
+      port: 3002
+      targetPort: 8082
+      nodePort: 31002
