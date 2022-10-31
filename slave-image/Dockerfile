@@ -79,8 +79,8 @@ RUN apt -q update &&            \
 #COPY --from=eclipse-temurin:17.0.4.1_1-jdk /opt/java/openjdk /opt/java/jdk17
 #COPY --from=eclipse-temurin:19_36-jdk /opt/java/openjdk /opt/java/jdk19
 
-ENV JAVA_HOME=/opt/java/jdk11
-ENV PATH="${JAVA_HOME}/bin:${PATH}"
+#ENV JAVA_HOME=/opt/java/jdk11
+#ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 ARG BASE_URL=https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/${MAVEN_VERSION}
 
@@ -107,7 +107,6 @@ RUN chown -R jenkins:jenkins /home/jenkins/agent
 USER ${user}
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
-#ENV PATH=/home/jenkins/google-cloud-sdk/bin:$PATH
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
@@ -128,5 +127,5 @@ RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
 USER ${user}
 
-#ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
+ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 
