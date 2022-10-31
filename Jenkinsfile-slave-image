@@ -9,6 +9,7 @@ pipeline {
   }
   stages {
     stage("Docker build and push") {
+      agent { node { label 'linux' } }
       steps {
         withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh "docker login -u $USERNAME -p $PASSWORD"
