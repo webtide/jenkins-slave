@@ -12,6 +12,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Packages Update / Install
 
+USER root
+
 RUN apt -q update &&     \
     apt -q upgrade -y && \
     apt -q install -y apt-utils && \
