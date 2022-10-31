@@ -114,24 +114,19 @@ WORKDIR /home/${user}
 
 ARG user=jenkins
 USER ${user}
-RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
-
-ARG VERSION=3071.v7e9b_0dc08466
+#RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
 
 USER root
-RUN curl --create-dirs -fsSLo /usr/share/jenkins/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar
+
+COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-slave /usr/local/bin/jenkins-slave
+COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/share/jenkins/agent.jar /usr/share/jenkins/agent.jar
+COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-agent
+
 RUN chmod 755 /usr/share/jenkins
 RUN chmod 644 /usr/share/jenkins/agent.jar
 RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
-
-
-USER ${user}
-ENV AGENT_WORKDIR=${AGENT_WORKDIR}
-RUN mkdir -p ${AGENT_WORKDIR}
-
-
 USER ${user}
 
-ENTRYPOINT ["java","-jar","/usr/share/jenkins/agent.jar"]
+#ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 
