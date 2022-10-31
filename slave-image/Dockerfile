@@ -113,7 +113,7 @@ WORKDIR /home/${user}
 
 ARG user=jenkins
 USER ${user}
-#RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
+RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
 
 USER root
 
