@@ -126,6 +126,7 @@ RUN chmod 644 /usr/share/jenkins/agent.jar
 RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
 USER ${user}
+ENV JAVA_HOME=/usr
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 
