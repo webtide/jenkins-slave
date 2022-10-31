@@ -1,4 +1,6 @@
-FROM jenkins/inbound-agent:latest-jdk11
+#FROM jenkins/inbound-agent:latest-jdk11
+
+FROM ubuntu:22.04
 
 MAINTAINER Olivier Lamy <olamy@apache.org>
 ARG MAVEN_VERSION=3.8.6
@@ -30,6 +32,8 @@ RUN apt -q update &&     \
                 apt-transport-https \
                 ca-certificates \
                 gnupg-agent \
+                gnupg \
+                lsb-release \ 
                 software-properties-common \
                 iproute2 \
                 leiningen \
@@ -47,7 +51,14 @@ RUN    apt -q clean -y
 RUN    rm -rf /var/lib/apt/lists/*
 RUN    rm -f /var/cache/apt/*.bin
 
+USER root
+RUN mkdir -p /etc/apt/keyrings
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+RUN echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 RUN add-apt-repository \
        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
@@ -104,3 +115,23 @@ WORKDIR /home/${user}
 ARG user=jenkins
 USER ${user}
 RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
+
+ARG VERSION=3071.v7e9b_0dc08466
+
+USER root
+RUN curl --create-dirs -fsSLo /usr/share/jenkins/agent.jar https://repo.jenkins-ci.org/public/org/jenkins-ci/main/remoting/${VERSION}/remoting-${VERSION}.jar
+RUN chmod 755 /usr/share/jenkins
+RUN chmod 644 /usr/share/jenkins/agent.jar
+RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
+
+
+
+USER ${user}
+ENV AGENT_WORKDIR=${AGENT_WORKDIR}
+RUN mkdir -p ${AGENT_WORKDIR}
+
+
+USER ${user}
+
+ENTRYPOINT ["java","-jar","/usr/share/jenkins/agent.jar"]
+
