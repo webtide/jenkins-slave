@@ -11,7 +11,6 @@ pipeline {
     stage("Docker build and push") {
       agent { node { label 'linux' } }
       steps {
-        container('jetty-build') {
           withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh "docker login -u $USERNAME -p $PASSWORD"
             sh "docker build --no-cache --tag=jetty-build-agent:latest slave-image/"
@@ -27,7 +26,6 @@ pipeline {
 //              echo "imageName after: $imageName"
 //            }
           }
-        }
       }
     }
   }
