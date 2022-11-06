@@ -25,8 +25,6 @@ RUN apt -q update &&     \
                 wget     \
                 unzip    \
                 curl     \
-                #python3   \
-                #python3-pip \
                 graphviz \
                 make     \
                 apt-transport-https \
@@ -41,6 +39,8 @@ RUN apt -q update &&     \
                 jq \
                 netcat \
                 nodejs \
+                linux-tools-lowlatency \ 
+                linux-lowlatency \            
                 #dnsutils \
                 git
 RUN    apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales
