@@ -39,7 +39,7 @@ RUN apt -q update &&     \
                 jq \
                 netcat \
                 nodejs \
-                linux-lowlatency \            
+                #linux-lowlatency \            
                 #dnsutils \
                 git
 RUN    apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales
