@@ -39,7 +39,6 @@ RUN apt -q update &&     \
                 jq \
                 netcat \
                 nodejs \
-                linux-tools-lowlatency \ 
                 linux-lowlatency \            
                 #dnsutils \
                 git
