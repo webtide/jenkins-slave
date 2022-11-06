@@ -17,14 +17,14 @@ pipeline {
             sh "docker tag jetty-build-agent:latest jettyproject/jetty-build-agent:$timestamp"
             sh "docker push jettyproject/jetty-build-agent:$timestamp"
             sh "docker logout"
-//            script {
-//              def imageName = Jenkins.instance.clouds.getByName("kubernetes").templates.find { it.name.equals("jenkins-slave") }.containers.find { it.name.equals("jnlp") }.image;
-//              echo "imageName before: $imageName"
-//              Jenkins.instance.clouds.getByName("kubernetes").templates.find { it.name.equals("jenkins-slave") }.containers.find { it.name.equals("jnlp") }.image = "jettyproject/jetty-build-agent:" + timestamp
-//              Jenkins.instance.save()
-//              imageName = Jenkins.instance.clouds.getByName("kubernetes").templates.find { it.name.equals("jenkins-slave") }.containers.find { it.name.equals("jnlp") }.image;
-//              echo "imageName after: $imageName"
-//            }
+            script {
+              def imageName = Jenkins.instance.clouds.getByName("kubernetes").templates.find { it.name.equals("jenkins-slave") }.containers.find { it.name.equals("jnlp") }.image;
+              echo "imageName before: $imageName"
+              Jenkins.instance.clouds.getByName("kubernetes").templates.find { it.name.equals("jenkins-slave") }.containers.find { it.name.equals("jnlp") }.image = "jettyproject/jetty-build-agent:" + timestamp
+              Jenkins.instance.save()
+              imageName = Jenkins.instance.clouds.getByName("kubernetes").templates.find { it.name.equals("jenkins-slave") }.containers.find { it.name.equals("jnlp") }.image;
+              echo "imageName after: $imageName"
+            }
           }
       }
     }
