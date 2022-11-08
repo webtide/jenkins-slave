@@ -10,7 +10,7 @@ spec:
   ports:
     - name: maven-port
       port: 8081
-      nodePort: 32001
+      targetPort: 9081
     - name: docker-port
       port: 8082
-      nodePort: 32002
+      targetPort: 9082

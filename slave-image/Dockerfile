@@ -120,6 +120,15 @@ COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-slave /usr
 COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/share/jenkins/agent.jar /usr/share/jenkins/agent.jar
 COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-agent
 
+RUN cd /usr/local/bin/ \
+&& wget https://github.com/joyrex2001/kubedock/releases/download/0.9.1/kubedock_0.9.1_linux_amd64.tar.gz \
+&& gunzip kubedock_0.9.1_linux_amd64.tar.gz \
+&& tar xvf kubedock_0.9.1_linux_amd64.tar \
+&& echo "#!/usr/bin/env sh" > startSlave.sh \
+&& echo "kubedock server --port-forward &" >> startSlave.sh \
+&& echo "/usr/local/bin/jenkins-agent" >> startSlave.sh \
+&& chmod +x startSlave.sh 
+
 RUN chmod 755 /usr/share/jenkins
 RUN chmod 644 /usr/share/jenkins/agent.jar
 RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
@@ -127,5 +136,6 @@ RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 USER ${user}
 ENV JAVA_HOME=/usr
 
-ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
+#ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
+ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
 
