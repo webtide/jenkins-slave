@@ -120,6 +120,9 @@ COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-slave /usr
 COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/share/jenkins/agent.jar /usr/share/jenkins/agent.jar
 COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-agent /usr/local/bin/jenkins-agent
 
+COPY --from=gcr.io/kaniko-project/executor:v1.9.1 /kaniko /kaniko
+RUN chmod +x /kaniko/executor
+
 RUN cd /usr/local/bin/ \
 && wget https://github.com/joyrex2001/kubedock/releases/download/0.9.1/kubedock_0.9.1_linux_amd64.tar.gz \
 && gunzip kubedock_0.9.1_linux_amd64.tar.gz \
