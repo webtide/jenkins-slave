@@ -51,25 +51,25 @@ RUN    rm -rf /var/lib/apt/lists/*
 RUN    rm -f /var/cache/apt/*.bin
 
 USER root
-RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+#RUN mkdir -p /etc/apt/keyrings
+#RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+#RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 
 #RUN echo \
 #  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
 #  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-RUN add-apt-repository \
-       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-       $(lsb_release -cs) \
-       stable"
+#RUN add-apt-repository \
+#       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+#       $(lsb_release -cs) \
+#       stable"
 
-RUN apt -q update &&            \
-    apt -q install -y           \
-                docker-ce       \
-                docker-ce-cli   \
-                containerd.io
-
+#RUN apt -q update &&            \
+#    apt -q install -y           \
+#                docker-ce       \
+#                docker-ce-cli   \
+#                containerd.io
+#
 
 
 # too heavy
