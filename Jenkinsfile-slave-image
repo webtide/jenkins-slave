@@ -4,6 +4,10 @@ def timestamp = java.time.Instant.now().toEpochMilli();
 
 pipeline {
   agent any
+  options {
+    durabilityHint('PERFORMANCE_OPTIMIZED')
+    buildDiscarder logRotator( numToKeepStr: '30' )
+  }  
   triggers {
     cron '@weekly'
   }
