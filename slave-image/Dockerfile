@@ -19,7 +19,7 @@ USER root
 RUN apt -q update 
 RUN apt -q upgrade -y
 #RUN    apt -q install -y apt-utils
-RUN    apt -q install -y    \
+RUN    apt -q install -y \
                 gcc      \
                 zip      \
                 wget     \
@@ -45,9 +45,6 @@ RUN    apt -q autoremove
 RUN    apt -q clean -y
 #RUN    rm -rf /var/lib/apt/lists/*
 #RUN    rm -f /var/cache/apt/*.bin
-
-USER root
-
 
 # too heavy
 #COPY --from=eclipse-temurin:8u345-b01-jdk /opt/java/openjdk /opt/java/jdk8
@@ -78,20 +75,15 @@ ARG gid=1000
 RUN addgroup -gid ${gid} ${group}
 RUN adduser --home /home/${user} --uid ${uid} --gid ${gid} ${user}
 ARG AGENT_WORKDIR=/home/${user}/agent
-RUN chown -R jenkins:jenkins /home/jenkins
-RUN chown -R jenkins:jenkins /home/jenkins/agent
-USER ${user}
+
+
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
 RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
 
-ARG user=jenkins
-USER ${user}
-RUN cd /home/${user}/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
-
-USER root
+RUN cd /home/jenkins/ && git clone --mirror  https://github.com/eclipse/jetty.project.git
 
 COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-slave /usr/local/bin/jenkins-slave
 COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/share/jenkins/agent.jar /usr/share/jenkins/agent.jar
@@ -113,7 +105,7 @@ RUN chmod 755 /usr/share/jenkins
 RUN chmod 644 /usr/share/jenkins/agent.jar
 RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
-USER ${user}
+RUN chown -R jenkins:jenkins /home/jenkins
 ENV JAVA_HOME=/usr
 
 #ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
