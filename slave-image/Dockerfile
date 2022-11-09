@@ -18,7 +18,7 @@ USER root
 
 RUN apt -q update 
 RUN apt -q upgrade -y
-RUN    apt -q install -y apt-utils
+#RUN    apt -q install -y apt-utils
 RUN    apt -q install -y    \
                 gcc      \
                 zip      \
