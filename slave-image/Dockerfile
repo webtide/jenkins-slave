@@ -15,11 +15,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Packages Update / Install
 
 USER root
-RUN rm /etc/apt/sources.list.d/docker.list
-RUN apt -q update &&     \
-    apt -q upgrade -y && \
-    #apt -q install -y apt-utils && \
-    apt -q install -y    \
+
+RUN apt -q update 
+RUN apt -q upgrade -y
+RUN    apt -q install -y apt-utils
+RUN    apt -q install -y    \
                 gcc      \
                 zip      \
                 wget     \
@@ -43,8 +43,8 @@ RUN apt -q update &&     \
                 git
 RUN    apt -q autoremove
 RUN    apt -q clean -y
-RUN    rm -rf /var/lib/apt/lists/*
-RUN    rm -f /var/cache/apt/*.bin
+#RUN    rm -rf /var/lib/apt/lists/*
+#RUN    rm -f /var/cache/apt/*.bin
 
 USER root
 
@@ -100,8 +100,8 @@ COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-agent /usr
 COPY --from=gcr.io/kaniko-project/executor:v1.9.1 /kaniko /kaniko
 RUN chmod +x /kaniko/executor
 
-RUN cd /usr/local/bin/ \
-&& wget https://github.com/joyrex2001/kubedock/releases/download/0.9.1/kubedock_0.9.1_linux_amd64.tar.gz \
+RUN cd /usr/local/bin/ && \
+    wget -nv https://github.com/joyrex2001/kubedock/releases/download/0.9.1/kubedock_0.9.1_linux_amd64.tar.gz \
 && gunzip kubedock_0.9.1_linux_amd64.tar.gz \
 && tar xvf kubedock_0.9.1_linux_amd64.tar \
 && echo "#!/usr/bin/env sh" > startSlave.sh \
