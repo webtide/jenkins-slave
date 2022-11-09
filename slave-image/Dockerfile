@@ -18,7 +18,7 @@ USER root
 
 RUN apt -q update &&     \
     apt -q upgrade -y && \
-    apt -q install -y apt-utils && \
+    #apt -q install -y apt-utils && \
     apt -q install -y    \
                 gcc      \
                 zip      \
@@ -27,7 +27,6 @@ RUN apt -q update &&     \
                 curl     \
                 graphviz \
                 make     \
-                apt-transport-https \
                 ca-certificates \
                 gnupg-agent \
                 gnupg \
@@ -39,37 +38,15 @@ RUN apt -q update &&     \
                 jq \
                 netcat \
                 nodejs \
-                #linux-lowlatency \            
-                #dnsutils \
+                linux-lowlatency \            
+                dnsutils \
                 git
-RUN    apt-get install -y --no-install-recommends curl ca-certificates fontconfig locales
-RUN    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
-RUN    locale-gen en_US.UTF-8
 RUN    apt -q autoremove
 RUN    apt -q clean -y
 RUN    rm -rf /var/lib/apt/lists/*
 RUN    rm -f /var/cache/apt/*.bin
 
 USER root
-#RUN mkdir -p /etc/apt/keyrings
-#RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-#RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-
-#RUN echo \
-#  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-#  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-#RUN add-apt-repository \
-#       "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-#       $(lsb_release -cs) \
-#       stable"
-
-#RUN apt -q update &&            \
-#    apt -q install -y           \
-#                docker-ce       \
-#                docker-ce-cli   \
-#                containerd.io
-#
 
 
 # too heavy
