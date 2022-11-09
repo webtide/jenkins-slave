@@ -18,7 +18,7 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             //sh "docker login -u $USERNAME -p $PASSWORD"
             sh "ls -alrt /kaniko/.docker/"
-            sh "/kaniko/executor --context `pwd`/slave-image/"
+            sh "/kaniko/executor --context `pwd`/slave-image/  --no-push "
             // --destination jettyproject/jetty-build-agent:$timestamp"
             //sh "docker build --no-cache --tag=jetty-build-agent:latest slave-image/"
             //sh "docker tag jetty-build-agent:latest jettyproject/jetty-build-agent:$timestamp"
