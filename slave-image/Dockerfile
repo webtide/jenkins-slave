@@ -108,6 +108,6 @@ RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 RUN chown -R jenkins:jenkins /home/jenkins
 ENV JAVA_HOME=/usr
 
-#ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
-ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
+ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
+#ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
 
