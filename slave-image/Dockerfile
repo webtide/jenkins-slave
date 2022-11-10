@@ -97,7 +97,7 @@ RUN cd /usr/local/bin/ && \
 && gunzip kubedock_0.9.1_linux_amd64.tar.gz \
 && tar xvf kubedock_0.9.1_linux_amd64.tar \
 && echo "#!/usr/bin/env sh" > startSlave.sh \
-&& echo "kubedock server --port-forward &" >> startSlave.sh \
+&& echo "kubedock server -n kubedock -t 10m --request-cpu 0.5,limit 0.5 --request-memory 4g,limit 6g --port-forward &" >> startSlave.sh \
 && echo "/usr/local/bin/jenkins-agent" >> startSlave.sh \
 && chmod +x startSlave.sh 
 
