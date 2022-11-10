@@ -17,14 +17,19 @@ pipeline {
       steps {
           withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
                            usernamePassword(credentialsId: 'nexus-cred', usernameVariable: 'USERNAME_NEXUS', passwordVariable: 'PASSWORD_NEXUS')]) {
+//            sh '''
+//              echo "{
+//                "insecure-registries" : ["myregistrydomain.com:5000"]
+//              }"
+//            '''
             sh "docker login -u $USERNAME -p $PASSWORD"
             sh "docker build --no-cache --tag=jetty-build-agent:latest slave-image/"
             sh "docker tag jetty-build-agent:latest jettyproject/jetty-build-agent:$timestamp"
             sh "docker push jettyproject/jetty-build-agent:$timestamp"
             sh "docker logout"
 
-            sh "docker login -u $USERNAME -p $PASSWORD 10.0.0.12:8083"
-            sh "docker tag jetty-build-agent:latest 10.0.0.12:8083/jettyproject/jetty-build-agent:$timestamp"
+            sh "docker login -u $USERNAME -p $PASSWORD 10.0.0.15:8083"
+            sh "docker tag jetty-build-agent:latest 10.0.0.15:8083/jettyproject/jetty-build-agent:$timestamp"
             sh "docker push 10.0.0.12:8083/jettyproject/jetty-build-agent:$timestamp"
             sh "docker logout"
 
