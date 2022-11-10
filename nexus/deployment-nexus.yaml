@@ -20,13 +20,16 @@ spec:
           image: sonatype/nexus3:3.42.0
           resources:
             limits:
-              memory: "6Gi"
+              memory: "8Gi"
               cpu: "1000m"
             requests:
               memory: "4Gi"
-              cpu: "500m"
+              cpu: "700m"
           ports:
             - containerPort: 8081
+            - containerPort: 8082
+            - containerPort: 8083
+            - containerPort: 8084
           volumeMounts:
             - mountPath: /nexus-data
               name: pv-nexus-storage
