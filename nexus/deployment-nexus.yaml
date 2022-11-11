@@ -13,6 +13,16 @@ spec:
       labels:
         app: nexus-server
     spec:
+      initContainers:
+        - name: chown-nexusdata-owner-to-nexus
+          image: busybox:1.34.1
+          command: [ "/bin/sh","-c" ]
+          args: [ "chown -R 200:200 /nexus-data" ]
+          volumeMounts:
+            - name: pv-nexus-storage
+              mountPath: /nexus-data
+      securityContext:
+        fsGroup: 200
       nodeSelector:
         nexus: "true"
       containers:

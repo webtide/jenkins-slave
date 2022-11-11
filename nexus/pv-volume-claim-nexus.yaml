@@ -4,7 +4,7 @@ metadata:
   name: task-pv-claim-nexus
   namespace: nexus
 spec:
-  storageClassName: microk8s-hostpath
+  storageClassName: local-storage
   accessModes:
     - ReadWriteOnce
   resources:

@@ -6,7 +6,7 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: microk8s-hostpath
+  storageClassName: local-storage
   capacity:
     storage: 140Gi
   accessModes:
