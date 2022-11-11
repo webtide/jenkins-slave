@@ -25,10 +25,10 @@ pipeline {
 //            sh "docker push $imageFinalName"
 //            sh "docker logout"
 
-            sh "docker login -u $USERNAME_NEXUS -p $PASSWORD_NEXUS 10.0.0.12:8084"
+            //sh "docker login -u $USERNAME_NEXUS -p $PASSWORD_NEXUS 10.0.0.12:8084"
             sh "docker tag jetty-build-agent:latest 10.0.0.12:8083/$imageFinalName"
             sh "docker push 10.0.0.12:8083/$imageFinalName"
-            sh "docker logout"
+            //sh "docker logout"
 
             script {
               def cloudName = "kubernetes-no-docker" // "kubernetes"
