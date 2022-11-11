@@ -19,13 +19,13 @@ pipeline {
           withCredentials([usernamePassword(credentialsId: 'DockerHubPwd', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD'),
                            usernamePassword(credentialsId: 'nexus-cred', usernameVariable: 'USERNAME_NEXUS', passwordVariable: 'PASSWORD_NEXUS')]) {
 
-            sh "docker login -u $USERNAME -p $PASSWORD"
-            sh "docker build --no-cache --tag=jetty-build-agent:latest slave-image/"
-            sh "docker tag jetty-build-agent:latest $imageFinalName"
-            sh "docker push $imageFinalName"
-            sh "docker logout"
+//            sh "docker login -u $USERNAME -p $PASSWORD"
+//            sh "docker build --no-cache --tag=jetty-build-agent:latest slave-image/"
+//            sh "docker tag jetty-build-agent:latest $imageFinalName"
+//            sh "docker push $imageFinalName"
+//            sh "docker logout"
 
-            sh "docker login -u $USERNAME -p $PASSWORD 10.0.0.12:8084"
+//            sh "docker login -u $USERNAME_NEXUS -p $PASSWORD_NEXUS 10.0.0.12:8084"
             sh "docker tag jetty-build-agent:latest 10.0.0.12:8084/$imageFinalName"
             sh "docker push 10.0.0.12:8083/$imageFinalName"
             sh "docker logout"
@@ -36,8 +36,8 @@ pipeline {
               def containerName = "jnlp"
               def imageName = Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image;
               echo "imageName before: $imageName"
-              Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image = imageFinalName;
-              Jenkins.instance.save()
+              //Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image = imageFinalName;
+              //Jenkins.instance.save()
               imageName = Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image;
               echo "imageName after: $imageName"
             }
