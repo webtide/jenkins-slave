@@ -4,7 +4,7 @@ metadata:
   name: kubedock-server
   namespace: kubedock
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: kubedock-server
@@ -28,4 +28,4 @@ spec:
           ports:
             - containerPort: 2475
           command: ["/app/kubedock"]
-          args: ["server","--namespace=kubedock","--timeout=10m0s","--request-cpu=0.5,limit 0.5","--request-memory=4g,limit 6g","--port-forward","--prune-start"]
+          args: ["server","--namespace=kubedock","--timeout=10m0s","--request-cpu=1","--request-memory=2Gi","--port-forward","--prune-start"]

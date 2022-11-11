@@ -97,7 +97,7 @@ RUN cd /usr/local/bin/ && \
 && gunzip kubedock_0.9.1_linux_amd64.tar.gz \
 && tar xvf kubedock_0.9.1_linux_amd64.tar \
 && echo "#!/usr/bin/env sh" > startSlave.sh \
-&& echo "kubedock server -n kubedock -t 10m --request-cpu 0.5,limit 0.5 --request-memory 4g,limit 6g --port-forward &" >> startSlave.sh \
+&& echo "kubedock server --lock --namespace=kubedock --timeout=10m0s --request-cpu=1 --request-memory=2Gi --port-forward &" >> startSlave.sh \
 && echo "/usr/local/bin/jenkins-agent" >> startSlave.sh \
 && chmod +x startSlave.sh 
 
@@ -108,6 +108,6 @@ RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 RUN chown -R jenkins:jenkins /home/jenkins
 ENV JAVA_HOME=/usr
 
-ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
-#ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
+#ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
+ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
 
