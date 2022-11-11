@@ -1,0 +1,4 @@
+{
+  "insecure-registries": ["10.0.0.12:8082","10.0.0.12:8083","localhost:32000"],
+  "registry-mirrors": ["http://10.0.0.12:8082"]
+}
