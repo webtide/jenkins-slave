@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubedock-service
+  namespace: kubedock
+spec:
+  selector: 
+    app: kubedock-server
+  type: ClusterIP
+  ports:
+    - name: kubedoc-port
+      port: 2475
+      targetPort: 2475

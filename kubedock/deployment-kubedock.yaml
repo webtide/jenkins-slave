@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubedock-server
+  namespace: kubedock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubedock-server
+  template:
+    metadata:
+      labels:
+        app: kubedock-server
+    spec:
+      nodeSelector:
+        kubedock-server: "true"
+      containers:
+        - name: kubedock-server
+          image: joyrex2001/kubedock:0.9.1
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+            requests:
+              memory: "2Gi"
+              cpu: "600m"
+          ports:
+            - containerPort: 2475
+          command: ["/app/kubedock"]
+          args: ["server","--namespace=kubedock","--timeout=10m0s","--request-cpu=0.5,limit 0.5","--request-memory=4g,limit 6g","--port-forward","--prune-start"]
