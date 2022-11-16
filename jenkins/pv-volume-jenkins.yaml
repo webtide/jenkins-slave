@@ -27,5 +27,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: /Users/olamy/softs/jenkins/data
+    path: /var/lib/jenkins/
 
