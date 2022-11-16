@@ -20,6 +20,7 @@ metadata:
   namespace: jenkins-master
   labels:
     jenkins: master
+    type: local
 spec:
   storageClassName: local-storage
   capacity:
