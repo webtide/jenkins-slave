@@ -15,25 +15,8 @@ spec:
         app: jenkins-server  
     spec:
       securityContext:
-        fsGroup: 114
+        fsGroup: 1000
         runAsUser: 1000
-      initContainers:
-       - name: init-chown
-         image: alpine
-         env:
-         - name: JENKINS_HOME
-           value: /var/jenkins_home
-         - name: MARKER
-           value: copy_reference_file.log
-         - name: UID
-           value: '1000'
-         command:
-         - sh
-         - -c
-         - if [ ! -f $JENKINS_HOME/$MARKER ]; then chown $UID:$UID -R $JENKINS_HOME; touch $JENKINS_HOME/$MARKER; chown $UID:$UID $JENKINS_HOME/$MARKER; fi
-         volumeMounts:
-         - mountPath: "/var/jenkins_home"
-           name: jenkins-data
       serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
