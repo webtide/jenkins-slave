@@ -20,13 +20,16 @@ spec:
       containers:
         - name: jenkins
           image: jenkins/jenkins:2.377-jdk17
+          env:
+            - name: JENKINS_JAVA_OPTS
+            - value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=90 -Xmx28g -Xms12g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
           resources:
             limits:
-              memory: "2Gi"
-              cpu: "1000m"
+              memory: "30Gi"
+              cpu: "6"
             requests:
-              memory: "500Mi"
-              cpu: "500m"
+              memory: "20Gi"
+              cpu: "4"
           ports:
             - name: httpport
               containerPort: 8080
