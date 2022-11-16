@@ -12,14 +12,32 @@ spec:
     metadata:
       labels:
         jenkins: master
+        app: jenkins-server  
     spec:
       securityContext:
         fsGroup: 114
-        runAsUser: 111
+        runAsUser: 1000
+      initContainers:
+       - name: init-chown
+         image: alpine
+         env:
+         - name: JENKINS_HOME
+           value: /var/jenkins_home
+         - name: MARKER
+           value: copy_reference_file.log
+         - name: UID
+           value: '1000'
+         command:
+         - sh
+         - -c
+         - if [ ! -f $JENKINS_HOME/$MARKER ]; then chown $UID:$UID -R $JENKINS_HOME; touch $JENKINS_HOME/$MARKER; chown $UID:$UID $JENKINS_HOME/$MARKER; fi
+         volumeMounts:
+         - mountPath: "/var/jenkins_home"
+           name: jenkins-data
       serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
-          image: jenkins/jenkins:2.377-jdk17
+          image: jenkins/jenkins:2.378-jdk17
           env:
             - name: JENKINS_JAVA_OPTS
               value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=90 -Xmx28g -Xms12g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
