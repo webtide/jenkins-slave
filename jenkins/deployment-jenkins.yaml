@@ -22,7 +22,7 @@ spec:
           image: jenkins/jenkins:2.377-jdk17
           env:
             - name: JENKINS_JAVA_OPTS
-            - value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=90 -Xmx28g -Xms12g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
+              value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=90 -Xmx28g -Xms12g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
           resources:
             limits:
               memory: "30Gi"
