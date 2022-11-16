@@ -5,7 +5,7 @@ metadata:
   namespace: jenkins-master
 spec:
   selector: 
-    app: jenkins-server
+    jenkins: master
   type: LoadBalancer  
   ports:
     - name: jenkins-port-http
