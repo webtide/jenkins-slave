@@ -13,6 +13,7 @@ spec:
       labels:
         jenkins: master
     spec:
+      nodeName: brahman
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
