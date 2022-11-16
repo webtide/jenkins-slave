@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       labels:
-        app: jenkins-server
+        jenkins: master
     spec:
       securityContext:
         fsGroup: 1000
