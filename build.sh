@@ -5,6 +5,8 @@
 
 #docker build --no-cache --tag=jetty-build:latest build-image/
 
+docker build --tag=jetty-build-agent:latest slave-image/
+
 docker build --no-cache --tag=jetty-build-agent:latest slave-image/
 
 #to deploy

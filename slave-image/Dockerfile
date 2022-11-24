@@ -40,7 +40,10 @@ RUN    apt -q install -y \
                 nodejs \
                 linux-lowlatency \            
                 dnsutils \
-                git
+                git 
+RUN    apt-get install -y --no-install-recommends ca-certificates fontconfig locales
+RUN    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+RUN    locale-gen en_US.UTF-8
 RUN    apt -q autoremove
 RUN    apt -q clean -y
 #RUN    rm -rf /var/lib/apt/lists/*
@@ -92,18 +95,13 @@ COPY --from=jenkins/inbound-agent:latest-jdk11 /usr/local/bin/jenkins-agent /usr
 COPY --from=gcr.io/kaniko-project/executor:v1.9.1 /kaniko /kaniko
 RUN chmod +x /kaniko/executor
 
-RUN cd /usr/local/bin/ && \
-    wget -nv https://github.com/joyrex2001/kubedock/releases/download/0.9.1/kubedock_0.9.1_linux_amd64.tar.gz \
-&& gunzip kubedock_0.9.1_linux_amd64.tar.gz \
-&& tar xvf kubedock_0.9.1_linux_amd64.tar \
-&& echo "#!/usr/bin/env sh" > startSlave.sh \
-&& echo "kubedock server --lock --namespace=kubedock --timeout=10m0s --request-cpu=1 --request-memory=2Gi --port-forward &" >> startSlave.sh \
-&& echo "/usr/local/bin/jenkins-agent" >> startSlave.sh \
-&& chmod +x startSlave.sh 
+COPY --from=joyrex2001/kubedock:0.9.2 /app/kubedock /usr/local/bin/kubedock
 
-#RUN chmod 755 /usr/share/jenkins
-#RUN chmod 644 /usr/share/jenkins/agent.jar
-#RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
+RUN cd /usr/local/bin/ \
+  && echo "#!/usr/bin/env sh" > startSlave.sh \
+  && echo "kubedock server --lock --namespace=kubedock --timeout=10m0s --request-cpu=1 --request-memory=2Gi --port-forward &" >> startSlave.sh \
+  && echo "/usr/local/bin/jenkins-agent" >> startSlave.sh \
+  && chmod +x startSlave.sh
 
 RUN chown -R jenkins:jenkins /home/jenkins
 ENV JAVA_HOME=/usr
