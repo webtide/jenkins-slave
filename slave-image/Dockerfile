@@ -101,14 +101,12 @@ RUN cd /usr/local/bin/ && \
 && echo "/usr/local/bin/jenkins-agent" >> startSlave.sh \
 && chmod +x startSlave.sh 
 
-RUN chmod 755 /usr/share/jenkins
-RUN chmod 644 /usr/share/jenkins/agent.jar
-RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
+#RUN chmod 755 /usr/share/jenkins
+#RUN chmod 644 /usr/share/jenkins/agent.jar
+#RUN ln -sf /usr/share/jenkins/agent.jar /usr/share/jenkins/slave.jar
 
 RUN chown -R jenkins:jenkins /home/jenkins
 ENV JAVA_HOME=/usr
-
-#COPY daemon.json /etc/docker/daemon.json
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 #ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
