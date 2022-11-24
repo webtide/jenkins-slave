@@ -36,8 +36,8 @@ pipeline {
               def containerName = "jnlp"
               def imageName = Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image;
               echo "imageName before: $imageName"
-              //Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image = imageFinalName;
-              //Jenkins.instance.save()
+              Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image = imageFinalName;
+              Jenkins.instance.save()
               imageName = Jenkins.instance.clouds.getByName(cloudName).templates.find { it.name.equals(templateName) }.containers.find { it.name.equals(containerName) }.image;
               echo "imageName after: $imageName"
             }
