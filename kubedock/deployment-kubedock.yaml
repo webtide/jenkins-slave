@@ -17,7 +17,7 @@ spec:
         kubedock-server: "true"
       containers:
         - name: kubedock-server
-          image: joyrex2001/kubedock:0.9.1
+          image: joyrex2001/kubedock:0.9.2
           resources:
             limits:
               memory: "2Gi"

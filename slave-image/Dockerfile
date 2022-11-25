@@ -40,7 +40,7 @@ RUN    apt -q install -y \
                 nodejs \
                 linux-lowlatency \            
                 dnsutils \
-                git 
+                git
 RUN    apt-get install -y --no-install-recommends ca-certificates fontconfig locales
 RUN    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN    locale-gen en_US.UTF-8
