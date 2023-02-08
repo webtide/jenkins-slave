@@ -14,8 +14,8 @@ spec:
         app: nginx-cache
     spec:
       containers:
-        - name: nginx
-          image: nginx:1.23.3
+        - name: jetty-nginx-build-cache
+          image: jettyproject/jetty-nginx-build-cache:09-02-2023-07-39
           resources:
             limits:
               memory: "3Gi"
@@ -25,3 +25,8 @@ spec:
               cpu: "400m"
           ports:
             - containerPort: 80
+#          env:
+#            - name: USERNAME
+#              value: admin
+#            - name: PASSWORD
+#              value: webdav
