@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: jetty-nginx-build-cache
-          image: jettyproject/jetty-nginx-build-cache:09-02-2023-07-39
+          image: jettyproject/jetty-nginx-build-cache:09-02-2023-07-47
           resources:
             limits:
               memory: "3Gi"
