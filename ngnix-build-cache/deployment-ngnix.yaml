@@ -5,7 +5,13 @@ metadata:
   namespace: jenkins
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-cache
   template:
+    metadata:
+      labels:
+        app: nginx-cache
     spec:
       containers:
         - name: ngnix
