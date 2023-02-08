@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-cache-service
+  namespace: jenkins
+spec:
+  selector: 
+    app: nginx-cache
+  type: ClusterIP
+  ports:
+    - name: http-port
+      port: 80
+      targetPort: 80
