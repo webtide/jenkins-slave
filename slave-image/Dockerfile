@@ -3,7 +3,7 @@
 FROM ubuntu:22.04
 
 MAINTAINER Olivier Lamy <olamy@apache.org>
-ARG MAVEN_VERSION=3.8.6
+ARG MAVEN_VERSION=3.9.2
 ARG USER_HOME_DIR="/root"
 
 # Default to UTF-8 file.encoding
@@ -106,7 +106,7 @@ RUN cd /usr/local/bin/ \
 RUN chown -R jenkins:jenkins /home/jenkins
 ENV JAVA_HOME=/usr
 
-ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
-#ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
+#ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
+ENTRYPOINT ["/usr/local/bin/startSlave.sh"]
 
 
