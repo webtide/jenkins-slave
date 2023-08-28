@@ -1,4 +1,4 @@
-FROM nginx:1.23.3
+FROM nginx:1.23.4
 
 MAINTAINER Olivier Lamy <olamy@apache.org>"
 
@@ -12,7 +12,7 @@ RUN rm /etc/nginx/sites-enabled/*
 RUN mkdir -p "/media/data"
 
 RUN chown -R www-data:www-data "/media/data"
-
+RUn chmod -R 777 "/media/data"
 VOLUME /media/data
 
 
