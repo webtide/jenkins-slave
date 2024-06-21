@@ -19,7 +19,7 @@ spec:
         nexus: "true"
       containers:
         - name: nexus
-          image: sonatype/nexus3:3.53.1
+          image: sonatype/nexus3:3.57.1
           resources:
             limits:
               memory: "8Gi"

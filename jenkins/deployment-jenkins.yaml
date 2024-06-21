@@ -13,17 +13,17 @@ spec:
       labels:
         jenkins: master
     spec:
-      nodeName: brahman
+      nodeName: brahman.webtide.net
       securityContext:
         fsGroup: 1000
         runAsUser: 1000
       serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
-          image: jenkins/jenkins:2.420-jdk17
+          image: jenkins/jenkins:2.463-jdk17
           env:
             - name: JENKINS_JAVA_OPTS
-              value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=90 -Xmx22g -Xms14g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
+              value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=80 -Xmx22g -Xms14g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
           resources:
             limits:
               memory: "30Gi"
