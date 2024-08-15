@@ -16,7 +16,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 USER root
 
-RUN apt -q update 
+RUN apt -q update  --fix-missing
 RUN apt -q upgrade -y
 #RUN    apt -q install -y apt-utils
 RUN    apt -q install -y \
@@ -44,7 +44,9 @@ RUN    apt -q install -y \
                 podman \
                 npm \
                 rsync \
+                python3-pip \
                 git
+
 RUN    apt-get install -y --no-install-recommends ca-certificates fontconfig locales
 RUN    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN    locale-gen en_US.UTF-8
@@ -57,6 +59,9 @@ RUN    apt -q autoremove
 RUN    apt -q clean -y
 #RUN    rm -rf /var/lib/apt/lists/*
 #RUN    rm -f /var/cache/apt/*.bin
+
+# install launchable
+RUN pip install --upgrade launchable~=1.9
 
 # too heavy
 #COPY --from=eclipse-temurin:8u345-b01-jdk /opt/java/openjdk /opt/java/jdk8
@@ -125,6 +130,11 @@ RUN curl -s "https://get.sdkman.io" | bash
 RUN bash "$HOME/.sdkman/bin/sdkman-init.sh"
 RUN mkdir -p ~/.sdkman/etc/
 RUN echo "sdkman_auto_answer=true" > ~/.sdkman/etc/config
+
+# install launchable
+#ENV PATH="${PATH}:/home/jenkins/.local/bin/"
+#ENV PATH="${PYTHONPATH}:"/home/jenkins/.local/"
+#RUN pip install --user --upgrade launchable~=1.9
 
 ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 #ENTRYPOINT ["/usr/local/bin/startSlave.sh"]

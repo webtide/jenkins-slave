@@ -20,16 +20,16 @@ spec:
       serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
-          image: jenkins/jenkins:2.463-jdk17
+          image: jenkins/jenkins:2.472-jdk17
           env:
             - name: JENKINS_JAVA_OPTS
-              value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=80 -Xmx22g -Xms14g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
+              value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=80 -Xmx26g -Xms14g -server -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true
           resources:
             limits:
               memory: "30Gi"
               cpu: "6"
             requests:
-              memory: "20Gi"
+              memory: "26Gi"
               cpu: "4"
           ports:
             - name: httpport
