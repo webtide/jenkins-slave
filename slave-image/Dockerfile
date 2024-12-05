@@ -81,6 +81,8 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref \
   && mkdir /home/jenkins \
   && mkdir /home/jenkins/agent
 
+RUN cd /home/jenkins/ && git clone --mirror  https://github.com/jetty/jetty.project.git
+
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
@@ -99,8 +101,6 @@ RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
-
-RUN cd /home/${user}/ && git clone --mirror  https://github.com/jetty/jetty.project.git
 
 RUN chown -R ${user}:${user} /home/${user}
 RUN mkdir -p /var/jenkins_home
