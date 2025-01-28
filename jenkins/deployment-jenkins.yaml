@@ -13,10 +13,10 @@ spec:
       labels:
         jenkins: master
     spec:
-      nodeName: brahman.webtide.net
+      nodeName: devon
       securityContext:
-        fsGroup: 1000
-        runAsUser: 1000
+        fsGroup: 1002
+        runAsUser: 1002
       serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
