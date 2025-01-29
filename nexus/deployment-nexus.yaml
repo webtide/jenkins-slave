@@ -14,7 +14,8 @@ spec:
         app: nexus-server
     spec:
       securityContext:
-        fsGroup: 200
+        runAsUser: 1004
+        runAsGroup: 200
       nodeSelector:
         nexus: "true"
       containers:
@@ -22,11 +23,11 @@ spec:
           image: sonatype/nexus3:3.76.1
           resources:
             limits:
+              memory: "12Gi"
+              cpu: "2000m"
+            requests:
               memory: "8Gi"
               cpu: "1000m"
-            requests:
-              memory: "6Gi"
-              cpu: "700m"
           ports:
             - containerPort: 8081
             - containerPort: 8082
