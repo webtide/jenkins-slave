@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 MAINTAINER Olivier Lamy <olamy@apache.org>
 ARG MAVEN_VERSION=3.9.9
@@ -31,18 +31,16 @@ RUN    apt -q install -y \
                 lsb-release \ 
                 software-properties-common \
                 iproute2 \
-                leiningen \
-                netcat \
+                #leiningen \
                 jq \
-                netcat \
                 nodejs \
                 linux-lowlatency \            
                 dnsutils \
                 buildah \
-                podman \
+                #podman \
                 npm \
                 rsync \
-                python3-pip \
+                #python3-pip \
                 git
 
 RUN    apt-get install -y --no-install-recommends ca-certificates fontconfig locales
@@ -65,7 +63,8 @@ RUN    apt -q clean -y
 #COPY --from=eclipse-temurin:8u345-b01-jdk /opt/java/openjdk /opt/java/jdk8
 #COPY --from=eclipse-temurin:11.0.16.1_1-jdk /opt/java/openjdk /opt/java/jdk11
 #COPY --from=eclipse-temurin:17.0.4.1_1-jdk /opt/java/openjdk /opt/java/jdk17
-COPY --from=eclipse-temurin:21.0.5_11-jdk /opt/java/openjdk /opt/java/jdk21
+#COPY --from=eclipse-temurin:21.0.5_11-jdk /opt/java/openjdk /opt/java/jdk21
+COPY --from=eclipse-temurin:21 /opt/java/openjdk /opt/java/jdk21
 
 
 ENV JAVA_HOME=/opt/java/jdk21
@@ -90,14 +89,14 @@ ARG user=ubuntu
 ARG group=ubuntu
 ARG uid=1001
 ARG gid=1001
-RUN addgroup -gid ${gid} ${group}
-RUN adduser --home /home/${user} --uid ${uid} --gid ${gid} ${user}
+#RUN addgroup -gid ${gid} ${group}
+#RUN adduser --home /home/${user} --uid ${uid} --gid ${gid} ${user}
 ARG AGENT_WORKDIR=/home/${user}/agent
 
 RUN groupadd -r jetty && useradd -r -g jetty jetty
 
 ENV AGENT_WORKDIR=${AGENT_WORKDIR}
-RUN mkdir /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
+RUN mkdir -p /home/${user}/.jenkins && mkdir -p ${AGENT_WORKDIR}
 VOLUME /home/${user}/.jenkins
 VOLUME ${AGENT_WORKDIR}
 WORKDIR /home/${user}
@@ -113,7 +112,8 @@ RUN curl -s "https://get.sdkman.io" | bash
 RUN bash "$HOME/.sdkman/bin/sdkman-init.sh"
 RUN mkdir -p ~/.sdkman/etc/
 RUN echo "sdkman_auto_answer=true" > ~/.sdkman/etc/config
-
+#RUN mkdir -p ~/.mimir/
+#RUN echo "mimir.jgroups.interface=match-address\:192.168.1.*" > ~/.mimir/daemon.properties
 
 #ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
 #ENTRYPOINT ["/usr/local/bin/startSlave.sh"]

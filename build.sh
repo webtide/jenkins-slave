@@ -5,8 +5,13 @@
 
 #docker build --no-cache --tag=jetty-build:latest build-image/
 
-#docker build --no-cache --tag=jetty-build-agent:latest slave-image/
-docker build --tag=jetty-build-agent:latest slave-image/
+docker build --no-cache --tag=jetty-build-agent:latest slave-image/
+#docker build --tag=jetty-build-agent:latest slave-image/
+retVal=$?
+if [ $retVal -ne 0 ]; then
+    echo "Error"
+    exit $retVal
+fi
 
 #to deploy
 #timestamp format: 11-09-2023-16-31
