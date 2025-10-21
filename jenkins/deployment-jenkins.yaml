@@ -20,10 +20,10 @@ spec:
       serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
-          image: jenkins/jenkins:2.512-jdk21
+          image: jenkins/jenkins:2.530-jdk21
           env:
             - name: JENKINS_JAVA_OPTS
-              value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=80 -Xmx22g -Xms14g -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true -Djenkins.InitReactorRunner.concurrency=80
+              value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=80 -Xmx18g -Xms18g -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true -Djenkins.InitReactorRunner.concurrency=100
           resources:
             limits:
               memory: "26Gi"

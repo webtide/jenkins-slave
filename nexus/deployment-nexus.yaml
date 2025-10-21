@@ -20,14 +20,14 @@ spec:
         nexus: "true"
       containers:
         - name: nexus
-          image: sonatype/nexus3:3.80.0
+          image: sonatype/nexus3:3.82.0
           resources:
             limits:
               memory: "12Gi"
-              cpu: "2000m"
+              cpu: "3000m"
             requests:
               memory: "8Gi"
-              cpu: "1000m"
+              cpu: "3000m"
           ports:
             - containerPort: 8081
             - containerPort: 8082
