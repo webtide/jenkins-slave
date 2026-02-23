@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: jenkins-webtide-cert
+  namespace: jenkins-master
+spec:
+  secretName: jenkins-webtide-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: jenkins.webtide.net
+  dnsNames:
+  - jenkins.webtide.net
