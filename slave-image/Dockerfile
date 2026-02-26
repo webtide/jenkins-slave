@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 
 MAINTAINER Olivier Lamy <olamy@apache.org>
-ARG MAVEN_VERSION=3.9.9
+ARG MAVEN_VERSION=3.9.12
 ARG USER_HOME_DIR="/root"
 
 # Default to UTF-8 file.encoding
