@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deny-service
+  namespace: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deny-service
+  template:
+    metadata:
+      labels:
+        app: deny-service
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "50m"
+            requests:
+              memory: "32Mi"
+              cpu: "25m"
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: deny-service-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: deny-service-config
+  namespace: nexus
+data:
+  nginx.conf: |
+    events {
+        worker_connections 1024;
+    }
+    http {
+        server {
+            listen 80;
+            server_name _;
+            
+            location / {
+                return 404 "Repository not found";
+                add_header Content-Type text/plain;
+            }
+        }
+    }

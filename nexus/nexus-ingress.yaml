@@ -16,6 +16,23 @@ spec:
   - host: repository.webtide.net
     http:
       paths:
+      # Allow access to release-staging repository (most specific first)
+      - path: /repository/release-staging/
+        pathType: Prefix
+        backend:
+          service:
+            name: nexus-service
+            port:
+              number: 8081
+      # Block all other repository paths
+      - path: /repository/
+        pathType: Prefix
+        backend:
+          service:
+            name: deny-service
+            port:
+              number: 80
+      # Allow root path and other non-repository paths
       - path: /
         pathType: Prefix
         backend:
