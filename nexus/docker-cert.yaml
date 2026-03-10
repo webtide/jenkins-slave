@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: docker-repository-webtide-cert
+  namespace: nexus
+spec:
+  secretName: docker-repository-webtide-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: docker.repository.webtide.net
+  dnsNames:
+  - docker.repository.webtide.net

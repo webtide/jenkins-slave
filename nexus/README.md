@@ -46,13 +46,22 @@ This directory contains Kubernetes manifests to deploy Sonatype Nexus Repository
   - Let's Encrypt TLS certificate for `repository.webtide.net`
   - Managed by cert-manager with letsencrypt-prod issuer
   
-- **`nexus-ingress.yaml`** - Ingress configuration:
+- **`docker-cert.yaml`** - Docker hostname certificate:
+  - Let's Encrypt TLS certificate for `docker.repository.webtide.net`
+  - Separate certificate for Docker registry access
+  
+- **`nexus-ingress.yaml`** - Main ingress configuration:
   - Traefik ingress controller setup
   - HTTPS redirect and TLS termination
   - Path-based routing with security rules:
     - Allows access to `/repository/release-staging/`
     - Blocks all other `/repository/` paths (routed to deny-service)
     - Allows root and non-repository paths
+
+- **`docker-ingress.yaml`** - Docker registry ingress:
+  - Dedicated ingress for Docker hostname `docker.repository.webtide.net`
+  - Traefik middleware for path rewriting to `/repository/docker-local/`
+  - Bypasses main repository path restrictions
 
 ## Prerequisites
 
@@ -105,11 +114,13 @@ kubectl apply -f deny-service.yaml
 
 ### 5. Configure SSL and Ingress
 ```bash
-# Create TLS certificate
+# Create TLS certificates
 kubectl apply -f nexus-cert.yaml
+kubectl apply -f docker-cert.yaml
 
-# Deploy ingress with path-based security
+# Deploy ingress configurations
 kubectl apply -f nexus-ingress.yaml
+kubectl apply -f docker-ingress.yaml
 ```
 
 ### 6. Verify Deployment
@@ -123,21 +134,33 @@ kubectl get pv,pvc -n nexus
 # Check ingress and certificates
 kubectl get ingress,certificates -n nexus
 
+# Check Traefik middleware
+kubectl get middleware -n nexus
+
 # Check Nexus logs
 kubectl logs -n nexus deployment/nexus-server -f
 ```
 
 ## Access Information
 
+### Main Repository Access
 - **External URL**: https://repository.webtide.net
 - **Internal Service**: `nexus-service.nexus.svc.cluster.local:8081`
 - **Allowed Repository Path**: `/repository/release-staging/`
 - **Blocked Paths**: All other `/repository/*` paths return 404
 
+### Docker Registry Access
+- **Docker Registry URL**: https://docker.repository.webtide.net
+- **Repository Path**: Automatically proxies to `/repository/docker-local/`
+- **Docker Login**: `docker login docker.repository.webtide.net`
+- **Docker Pull Example**: `docker pull docker.repository.webtide.net/my-image:tag`
+- **Docker Push Example**: `docker push docker.repository.webtide.net/my-image:tag`
+
 ## Security Features
 
-- **Path-based Access Control**: Only `/repository/release-staging/` is publicly accessible
-- **TLS Encryption**: Automatic HTTPS with Let's Encrypt certificates
+- **Path-based Access Control**: Only `/repository/release-staging/` is publicly accessible on main hostname
+- **Docker Registry Isolation**: `docker.repository.webtide.net` has dedicated access to docker-local repository only
+- **TLS Encryption**: Automatic HTTPS with Let's Encrypt certificates for both hostnames
 - **Non-root Containers**: Runs with security context (user 1004:200)
 - **Resource Limits**: Prevents resource exhaustion
 - **Network Policies**: Services isolated within nexus namespace
@@ -151,7 +174,33 @@ kubectl logs -n nexus deployment/nexus-server -f
 
 ## Troubleshooting
 
+### General Issues
 - **Storage Issues**: Verify host path permissions and node labels
 - **Ingress Issues**: Check Traefik controller and certificate status
 - **Access Denied**: Review ingress path rules and deny-service configuration
 - **Resource Issues**: Monitor pod resource usage and adjust limits if needed
+
+### Docker Registry Issues
+- **Docker Login Fails**: Verify `docker.repository.webtide.net` certificate is valid and trusted
+- **Push/Pull Errors**: Check Docker registry authentication in Nexus UI
+- **Path Issues**: Ensure requests are being routed to `/repository/docker-local/`
+- **Middleware Problems**: Check Traefik middleware status: `kubectl get middleware -n nexus`
+
+### Testing Commands
+```bash
+# Test Docker registry connectivity
+curl -k -I https://docker.repository.webtide.net/v2/
+
+# Test main repository access
+curl -k -I https://repository.webtide.net/
+
+# Test path restrictions
+curl -k -I https://repository.webtide.net/repository/docker-local/  # Should return 404
+curl -k -I https://repository.webtide.net/repository/release-staging/  # Should return 200
+
+# Check certificate status
+kubectl get certificates -n nexus
+
+# Check ingress routing
+kubectl describe ingress -n nexus
+```

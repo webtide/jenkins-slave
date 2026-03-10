@@ -1,0 +1,35 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: docker-path-rewrite
+  namespace: nexus
+spec:
+  replacePathRegex:
+    regex: "^/(.*)"
+    replacement: "/repository/docker-local/$1"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: docker-nexus-ingress
+  namespace: nexus
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+spec:
+  ingressClassName: traefik
+  tls:
+  - hosts:
+    - docker.repository.webtide.net
+    secretName: docker-repository-webtide-tls
+  rules:
+  - host: docker.repository.webtide.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nexus-service
+            port:
+              number: 8082
