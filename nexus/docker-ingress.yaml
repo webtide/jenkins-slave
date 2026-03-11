@@ -5,8 +5,8 @@ metadata:
   namespace: nexus
 spec:
   replacePathRegex:
-    regex: "^/(.*)"
-    replacement: "/repository/docker-local/$1"
+    regex: "^/v2(.*)"
+    replacement: "/repository/docker-local/v2$1"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -16,6 +16,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/router.middlewares: nexus-docker-path-rewrite@kubernetescrd
 spec:
   ingressClassName: traefik
   tls:
@@ -32,4 +33,4 @@ spec:
           service:
             name: nexus-service
             port:
-              number: 8082
+              number: 8081

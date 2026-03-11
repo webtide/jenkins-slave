@@ -24,6 +24,14 @@ spec:
             name: nexus-service
             port:
               number: 8081
+      # Allow access to docker-local repository
+      - path: /repository/docker-local/
+        pathType: Prefix
+        backend:
+          service:
+            name: nexus-service
+            port:
+              number: 8081
       # Block all other repository paths
       - path: /repository/
         pathType: Prefix
