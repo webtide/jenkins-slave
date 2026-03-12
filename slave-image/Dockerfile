@@ -1,3 +1,5 @@
+FROM bitnami/kubectl:latest AS kubectl-source
+
 FROM ubuntu:24.04
 
 MAINTAINER Olivier Lamy <olamy@apache.org>
@@ -112,6 +114,12 @@ RUN curl -s "https://get.sdkman.io" | bash
 RUN bash "$HOME/.sdkman/bin/sdkman-init.sh"
 RUN mkdir -p ~/.sdkman/etc/
 RUN echo "sdkman_auto_answer=true" > ~/.sdkman/etc/config
+
+COPY --from=kubectl-source /opt/bitnami/kubectl/bin/kubectl /usr/local/bin/kubectl
+
+# Verify installation
+RUN kubectl version --client
+
 #RUN mkdir -p ~/.mimir/
 #RUN echo "mimir.jgroups.interface=match-address\:192.168.1.*" > ~/.mimir/daemon.properties
 
