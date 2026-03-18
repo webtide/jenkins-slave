@@ -3,7 +3,7 @@ FROM bitnami/kubectl:latest AS kubectl-source
 FROM ubuntu:24.04
 
 MAINTAINER Olivier Lamy <olamy@apache.org>
-ARG MAVEN_VERSION=3.9.12
+ARG MAVEN_VERSION=3.9.14
 ARG USER_HOME_DIR="/root"
 
 # Default to UTF-8 file.encoding
@@ -27,6 +27,7 @@ RUN    apt -q install -y \
                 curl     \
                 graphviz \
                 make     \
+                zlib1g-dev \
                 ca-certificates \
                 gnupg-agent \
                 gnupg \
