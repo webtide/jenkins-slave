@@ -20,7 +20,7 @@ spec:
       serviceAccountName: jenkins-admin
       containers:
         - name: jenkins
-          image: jenkins/jenkins:2.552-jdk25
+          image: jenkins/jenkins:2.555-jdk25
           env:
             - name: JENKINS_JAVA_OPTS
               value: -Djava.awt.headless=true -Dblueocean.collectRuns.threads=80 -XX:MaxRAMPercentage=66.0 -XX:InitialRAMPercentage=40.0 -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+ExplicitGCInvokesConcurrent -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:+UseStringDeduplication -Dorg.jenkinsci.plugins.durabletask.BourneShellScript.LAUNCH_DIAGNOSTICS=true -Djenkins.InitReactorRunner.concurrency=100 -XX:+UseCompactObjectHeaders
