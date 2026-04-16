@@ -40,6 +40,14 @@ spec:
             name: nexus-service
             port:
               number: 8081
+      # Allow access to maven-build-cache repository
+      - path: /repository/maven-build-cache/
+        pathType: Prefix
+        backend:
+          service:
+            name: nexus-service
+            port:
+              number: 8081
       # Block all other repository paths
       - path: /repository/
         pathType: Prefix

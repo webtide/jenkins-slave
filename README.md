@@ -31,6 +31,18 @@ kubectl apply -f jenkins/
 kubectl apply -f nginx-build-cache/
 ```
 
+## Nexus Repository Services
+
+| URL | Repository | Access |
+|-----|-----------|--------|
+| https://repository.webtide.net/repository/release-staging/ | Maven release staging | Public |
+| https://repository.webtide.net/repository/maven-build-cache/ | Maven build cache | Public |
+| https://repository.webtide.net/repository/maven-snapshots/ | Maven snapshots | Public |
+| https://repository.webtide.net/repository/docker-local/ | Docker images (raw path) | Public |
+| https://docker.repository.webtide.net | Docker registry (OCI) | Public |
+
+All other `/repository/*` paths on `repository.webtide.net` return 404.
+
 ## Key Features
 
 - **Multi-architecture builds** with buildah (Docker-free CI)

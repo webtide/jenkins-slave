@@ -55,6 +55,7 @@ This directory contains Kubernetes manifests to deploy Sonatype Nexus Repository
   - HTTPS redirect and TLS termination
   - Path-based routing with security rules:
     - Allows access to `/repository/release-staging/`
+    - Allows access to `/repository/maven-build-cache/`
     - Blocks all other `/repository/` paths (routed to deny-service)
     - Allows root and non-repository paths
 
@@ -146,7 +147,7 @@ kubectl logs -n nexus deployment/nexus-server -f
 ### Main Repository Access
 - **External URL**: https://repository.webtide.net
 - **Internal Service**: `nexus-service.nexus.svc.cluster.local:8081`
-- **Allowed Repository Path**: `/repository/release-staging/`
+- **Allowed Repository Paths**: `/repository/release-staging/`, `/repository/maven-build-cache/`
 - **Blocked Paths**: All other `/repository/*` paths return 404
 
 ### Docker Registry Access
@@ -158,7 +159,7 @@ kubectl logs -n nexus deployment/nexus-server -f
 
 ## Security Features
 
-- **Path-based Access Control**: Only `/repository/release-staging/` is publicly accessible on main hostname
+- **Path-based Access Control**: Only `/repository/release-staging/` and `/repository/maven-build-cache/` are publicly accessible on main hostname
 - **Docker Registry Isolation**: `docker.repository.webtide.net` has dedicated access to docker-local repository only
 - **TLS Encryption**: Automatic HTTPS with Let's Encrypt certificates for both hostnames
 - **Non-root Containers**: Runs with security context (user 1004:200)
